@@ -1,0 +1,19 @@
+{
+  "name": "atelier",
+  "description": "Atelier: carrosséis de Instagram no padrão aprovado do Convello e da R12 Company, montados pelo Claude.",
+  "owner": { "name": "R12 Company", "url": "https://r12company.com" },
+  "plugins": [
+    {
+      "name": "carrossel-convello",
+      "source": "./plugins/carrossel-convello",
+      "description": "Carrosséis de Instagram do Convello (CRM de atendimento e vendas pelo WhatsApp) no padrão aprovado pela marca.",
+      "category": "design"
+    },
+    {
+      "name": "carrossel-r12",
+      "source": "./plugins/carrossel-r12",
+      "description": "Carrosséis de Instagram da R12 Company (agência de marketing e tráfego pago) no padrão aprovado pela marca.",
+      "category": "design"
+    }
+  ]
+}

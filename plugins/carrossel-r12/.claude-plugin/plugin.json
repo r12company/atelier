@@ -1,0 +1,11 @@
+{
+  "name": "carrossel-r12",
+  "displayName": "Carrossel R12",
+  "version": "1.0.0",
+  "description": "Carrosséis de Instagram da R12 Company no padrão aprovado pela marca, montados no Atelier (PhotoCraft), com os prompts das imagens para o Gemini ou o ChatGPT.",
+  "author": { "name": "R12 Company", "url": "https://r12company.com" },
+  "homepage": "https://github.com/r12company/atelier",
+  "repository": "https://github.com/r12company/atelier",
+  "license": "MIT",
+  "keywords": ["instagram", "carrossel", "photocraft", "atelier", "r12"]
+}
