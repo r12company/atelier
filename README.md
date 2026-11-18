@@ -101,6 +101,8 @@ with an ordinary, real look ... Background: a very light gray studio wall, smoot
 
 Os blocos dos prompts saíram das imagens que as marcas aprovaram (luz, enquadramento, objeto 3D, logo). Prints do sistema vêm do time do Convello ou de uma conta de demonstração, nunca de cliente real.
 
+**Prints do CRM Convello:** quem tem a chave da API Atelier Telas (fornecida pela Convello) tira prints reais em modo demonstração direto pelo Claude Code. Como ligar: [docs/atelier-telas.md](docs/atelier-telas.md).
+
 ## O que precisa ter na máquina
 
 | Item | Para quê | Como conseguir |

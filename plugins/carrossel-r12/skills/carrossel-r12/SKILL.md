@@ -15,7 +15,7 @@ Pasta desta skill: `${CLAUDE_SKILL_DIR}` (a pasta onde está este SKILL.md). Pas
 O passo a passo, as regras de texto, os moldes, o material, os pedidos de imagem e a lista do que foi reprovado são os do Convello, copiados aqui:
 `referencias/copy.md`, `referencias/moldes.md`, `referencias/reprovado.md`, `referencias/material.md`, `referencias/arquitetura-visual.md`, `referencias/motor.md`, `referencias/caminho-b.md` e `modelos-de-prompt/`.
 Onde aquelas regras falam "Convello", leia "R12". Onde divergirem, esta skill vence.
-Os exemplos que elas citam (`exemplo/folha.jpg`, `exemplo/tiktok-folha.jpg`, `exemplo/moldes.jpg`, `exemplo/slides.py`) ficam na skill `carrossel-convello`; aqui o exemplo é `exemplo/folha-pdf-seo.jpg`.
+Os exemplos daqui são `exemplo/folha-pdf-seo.jpg` (a folha aprovada), `exemplo/slides-pdf-seo.py` (as peças) e as provas em `exemplo/prova*/`.
 
 ## Quem faz o quê
 
@@ -56,7 +56,12 @@ Os exemplos que elas citam (`exemplo/folha.jpg`, `exemplo/tiktok-folha.jpg`, `ex
 - Slide limpo como a capa: título grande, UMA imagem, o fio. Pouco texto: o apoio de 2 linhas só quando for indispensável.
 - Mais visual por estratégia, não por imagem gerada: gráfico de barras, linha no tempo, fluxo com setas, antes x depois, equação visual. Peças prontas para copiar em `exemplo/slides-pdf-seo.py` (`s3` barras, `s4` busca com o lugar vazio, `s5` fluxo, `s6` anúncio x SEO no tempo, `s19` torre de preço, `s21` 10 meses = 1 venda). Folha: `exemplo/folha-pdf-seo.jpg` (os 10 primeiros dos 23 slides; os outros citavam clientes e preços).
 - Capa: pessoa de verdade (gerada), roupa verde quando fizer sentido, objeto 3D verde atrás (lupa, pino de mapa), palavra gigante em Oswald e tarja verde.
-- Foto gerada no Gemini: alise a parede antes (`python3 $M/alisar.py <pasta>/geradas/foto.png`) e use o recorte pela máscara (`_recorte_pela_mascara` no exemplo). O recorte automático leva a parede junto.
+- Foto gerada no Gemini: alise a parede antes (`python3 $M/alisar.py <pasta>/geradas/foto.png`) e use a `foto-lisa.png` no `slides.py`: o motor acha a `foto-lisa-mascara.png` ao lado e recorta por ela (sem máscara e com cabelo no alto, faz a máscara na hora; acima de 70% da foto, ou pessoa encostando na logo, para com erro).
+- Fundo dos slides: `abrir(n, 'claro')` ou `abrir(n, 'escuro')` (os nomes antigos `'branco'` e `'azul'` também valem).
+
+## Prints
+
+Prints de trabalho real da R12 vêm de quem pediu, com autorização do cliente. Se o post mostrar o CRM Convello, os prints vêm da API Atelier Telas da Convello: com a chave (fornecida pela Convello), adicione o MCP com `claude mcp add --transport http atelier-telas https://atelier.convello.com.br/mcp --header "Authorization: Bearer SUA_CHAVE"` e use `print_tela`; sem chave, peça os prints à Convello. Guia: `docs/atelier-telas.md` no repositório do Atelier.
 
 ## Comandos
 

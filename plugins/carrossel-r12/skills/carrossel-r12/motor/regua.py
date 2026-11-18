@@ -122,7 +122,7 @@ def main():
     tipos = {n: tipo(n, fichas, nums[-1]) for n in nums}
     for n in nums:
         planta(os.path.join(base, 'png', f'{n:02d}.png'), os.path.join(saida, f'{n:02d}.png'), tipos[n])
-    subprocess.run(['montage'] + [os.path.join(saida, f'{n:02d}.png') for n in nums] + ['-resize', '540x', '-tile', '5x', '-geometry', '+10+10',
+    subprocess.run(['montage'] + [os.path.join(saida, f'{n:02d}.png') for n in nums] + ['-resize', '540x', '-tile', f'{min(len(nums), 5)}x', '-geometry', '+10+10',
                    '-background', '#111', '-quality', '90', os.path.join(saida, 'folha-com-regua.jpg')], check=True)
     # Todos os slides emendados, como quem arrasta: é aqui que se vê se o fio e as peças que atravessam casam.
     subprocess.run(['magick'] + [os.path.join(base, 'png', f'{n:02d}.png') for n in nums] + ['+append', '-resize', 'x720', '-quality', '90',

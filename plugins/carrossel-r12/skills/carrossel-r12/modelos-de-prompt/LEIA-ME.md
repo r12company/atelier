@@ -1,6 +1,6 @@
 # Modelos de prompt: como pedir as imagens (R12)
 
-Iguais aos do Convello, com o verde da R12 (#95db30) no lugar do azul. Exemplos de "carrossel 02" são do Convello: servem pelo jeito de pedir.
+O mesmo método do Convello, com o verde da R12 (`#95db30`) nos objetos e ícones. A referência de estilo da R12 é a proposta de SEO (`exemplo/folha-pdf-seo.jpg`).
 
 A skill não gera imagem. Ela escreve o pedido; a produtora cola no gerador, baixa o resultado e salva na pasta indicada.
 Os blocos daqui são os que deram certo nos carrosséis aprovados (e os cuidados vêm do que foi reprovado). Junte os blocos; não reescreva do zero.
@@ -19,7 +19,7 @@ Sempre baixe em PNG, no maior tamanho que a ferramenta der.
 
 ````markdown
 ## capa-pessoa.png
-O que é: a pessoa da capa, aflita, olhando o celular (o problema do post).
+O que é: a dona da loja na capa, olhando o celular sem entender o anúncio (o problema do post).
 Onde gerar: Gemini (AI Studio, proporção 3:4) ou ChatGPT (retrato 2:3).
 Anexar: nada (ou `referencias/estilo-luz.png`, só como referência de luz).
 Salvar como: `geradas/capa-pessoa.png`
@@ -54,6 +54,6 @@ Depois de mandar, espere a produtora salvar e olhe cada imagem (Read).
 ## Nunca peça
 
 - rosto de pessoa real (gente da notícia): só foto de verdade, com licença livre (`referencias/material.md`);
-- tela de sistema ou print: o gerador inventa a interface;
+- print de site, de anúncio ou de resultado: o gerador inventa a tela e o número (print é só de trabalho real, `referencias/material.md`);
 - texto, letra ou número dentro da imagem: o motor escreve o texto;
 - a mesma pessoa de outro carrossel: personagem novo a cada carrossel.

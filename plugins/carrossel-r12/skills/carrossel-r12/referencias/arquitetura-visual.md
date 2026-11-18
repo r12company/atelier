@@ -2,7 +2,7 @@
 
 A planta que todo slide segue: onde cada coisa fica, quanto de respiro tem e por onde o olho passa.
 Os números moram em `motor/planta.py` e o `motor/comum.py` já monta nessa planta. Você só decide a PEÇA.
-Para ver o resultado aprovado: `exemplo/folha.jpg`. Para conferir um carrossel com a régua por cima: `python3 motor/regua.py <pasta>`.
+Para ver o resultado aprovado: `exemplo/folha-pdf-seo.jpg` (peças em `exemplo/slides-pdf-seo.py`). Para conferir um carrossel com a régua por cima: `python3 motor/regua.py <pasta>`.
 
 ## 1. A rota do olho
 
@@ -12,7 +12,7 @@ Para ver o resultado aprovado: `exemplo/folha.jpg`. Para conferir um carrossel c
 | --- | --- | --- |
 | 1º | Título | É a maior letra e fica no canto de cima à esquerda, onde a leitura começa |
 | 2º | Frase em tarja | Bloco de cor chapada: é lida até por quem pula o texto |
-| 3º | A peça (print ou desenho) | É a prova. Fica no centro e começa sempre na mesma altura |
+| 3º | A peça (gráfico, busca desenhada, print de trabalho real) | É a prova. Fica no centro e começa sempre na mesma altura |
 | 4º | O fio | A pergunta que puxa o próximo slide e o botão redondo, no canto onde a leitura termina |
 
 **Slide de foto (capa e final).**
@@ -20,14 +20,14 @@ Para ver o resultado aprovado: `exemplo/folha.jpg`. Para conferir um carrossel c
 | Ordem | O quê | Por quê |
 | --- | --- | --- |
 | 1º | O rosto | Rosto segura o olhar |
-| 2º | Para onde a pessoa olha | Na capa ela olha para o celular, que fica logo acima do título |
+| 2º | Para onde a pessoa olha | Na capa ela olha para o que importa (o objeto 3D, o celular), logo acima do título |
 | 3º | A palavra gigante | O maior elemento do slide |
 | 4º | A tarja (capa) ou a chamada (final) | Fecha a frase |
 
 Regras que saem daí:
 
 - **Uma coisa só chama mais que as outras em cada slide.** Tamanho e contraste decidem quem é visto primeiro. Se duas coisas brigam, uma diminui.
-- **Na capa a pessoa olha para o que importa** (o celular, o objeto). O leitor segue o olhar do rosto da foto.
+- **Na capa a pessoa olha para o que importa** (a lupa, o pino de mapa, o celular). O leitor segue o olhar do rosto da foto.
 - **No final a pessoa olha para a câmera.** O rosto de frente segura a atenção nele mesmo, e a chamada vem logo abaixo.
 - **Título em cima à esquerda, saída embaixo à direita.** É o caminho natural da leitura e combina com o gesto de arrastar.
 - **A peça prova o que o título disse.** Se o texto fala de uma coisa, ela aparece na peça, grande o bastante para ler no celular.
@@ -38,13 +38,13 @@ Regras que saem daí:
 | --- | --- | --- |
 | Margem | 80 de cada lado | Tudo começa em 80 e termina em 1000 |
 | Logo | 56 a 120 | Sempre no canto de cima à esquerda. Arroba à direita nos slides de conteúdo |
-| Título | linhas de base em 244 e 324 | 64 px, duas linhas |
-| Texto | linhas de base em 400 e 448 | 34 px, duas linhas |
-| Frase em tarja | 472 a 528 | 34 px, negrito |
-| Peça | 592 a 1264 (`PECA_Y` a `ATE`) | 64 px abaixo da tarja. Nenhuma peça passa de 1264 |
+| Título | 1ª linha de base em 244, a 2ª uns 92 px abaixo | Oswald 82, duas linhas (no exemplo, 92 a partir de y = 316) |
+| Texto | logo abaixo do título (o motor calcula) | 34 px, duas linhas, só quando indispensável |
+| Frase em tarja | logo abaixo do texto | 34 px, negrito |
+| Peça | até 1264 (`ATE`) | 64 px abaixo do último texto. Nenhuma peça passa de 1264. No exemplo a imagem começa em 560 |
 | Fio | 1344 | 80 px abaixo da peça. A faixa do rodapé vai de 1296 a 1392 |
 
-Slide sem texto de apoio (o resumo): a peça sobe para 396 (`TEXTO_Y + 48`).
+Slide sem texto de apoio (o padrão aprovado da R12: título, uma imagem, o fio): a peça sobe para logo abaixo do título.
 
 Slides de foto: cabelo começa em 48, rosto com 540 de altura, palavra gigante assenta em 1272 e a
 tarja ou a chamada ocupa a faixa do rodapé (1296 a 1392). A foto escurece de 800 para baixo, para o título aparecer.
@@ -63,32 +63,32 @@ Texto nunca encosta em outra peça. Dois rótulos lado a lado ficam grudados: us
 
 ## 4. Tipografia limpa
 
-- **IBM Plex Sans** em tudo: título em negrito (64), texto normal (34), frase em tarja em negrito (34).
-- **Oswald** (condensada), só na palavra de impacto: a palavra gigante da capa e do final e, no máximo, uma frase curta de impacto dentro da peça.
-- Título em tamanho de manchete. Gigante só na capa e no final.
+- **Oswald** (condensada) no título das páginas (82 a 92, peso 600), na palavra gigante da capa e do final e no número de impacto dentro da peça.
+- **IBM Plex Sans** no resto: texto normal (34), frase em tarja em negrito (34), pergunta do fio (34), rótulos da peça.
+- Título em tamanho de manchete. Gigante (palavra de 180 a 256) só na capa, no final e no número de impacto.
 - Nada abaixo de 24 px. O slide aparece no celular com cerca de um terço do tamanho.
 - Quebra de linha escolhida à mão, sem palavra sozinha na última linha.
 - Dentro da peça desenhada: nome 34 ou 35 em negrito, mensagem 28 ou 29, hora 25. Rótulo que aponta para print: 30, peso 600.
 
 ## 5. Cor e contraste
 
-- Fundos intercalados: capa com foto, branco, azul, branco, azul... e final com foto. O motor escolhe pelo número do slide.
-- Fundo branco leva peça escura. Fundo azul leva peça clara. Azul nunca em cima de azul, claro nunca em cima de claro.
-- Print do sistema (tela escura) leva moldura branca fina nos dois fundos: `print_do_sistema` já põe.
+- Fundos intercalados: capa com foto, claro, escuro, claro, escuro... e final com foto. O motor escolhe pelo número do slide (`abrir(n, 'claro')` ou `'escuro'` para deixar escrito).
+- Fundo claro (quase branco) leva peça escura. Fundo escuro (`#161616` com toque de verde) leva peça clara ou verde. Escuro nunca em cima de escuro, claro nunca em cima de claro.
+- Print de trabalho real (site de cliente, campanha) leva moldura branca fina nos dois fundos: `print_do_sistema` já põe.
 - Vermelho (`#D92D34`) só nos slides do problema, e só em cima de claro: `abrir(n, destaque=VERMELHO)`.
-- Azul Convello `#005DE1` é o destaque. Azul Profundo `#0B1423` é o texto.
+- Verde `#95db30` é o destaque, a tarja e o botão no escuro. No claro o destaque de texto é o verde de leitura `#3f7a0f` (o `#95db30` não dá leitura no claro). Escuro `#161616` é o título no claro.
 - Fundo nunca chapado: degradê leve com grão. Já vem pronto no `abrir`.
 
 ## 6. Ícone, objeto e logo
 
 - **Em foto:** objeto 3D grande, ATRÁS da pessoa e meio escondido por ela, um de cada lado, os dois virados para o meio. Nunca pequeno e boiando na frente, nunca com brilho em volta. Como: `foto_de_pessoa(..., atras=funcao)`.
-- **No lugar de número:** lista de itens leva ícone 3D grande (120 px), nunca "1, 2, 3", "01" ou bolinha numerada.
-- **A logo do Convello** não gira, não deforma e não leva caixa nem faixa atrás. No azul é a branca com sombreado. `topo` já faz.
-- **Nada por cima de foto ou de print:** sem selo, etiqueta, bolinha, cartão ou seta em cima. Para explicar um print: rótulo do lado de fora e linha fina até o ponto (`linha_fina`), como no slide 5 do exemplo.
+- **No lugar de número:** lista de itens leva ícone 3D grande (120 px) ou ícone de traço (dicionário `I` em `exemplo/slides-pdf-seo.py`), nunca "1, 2, 3", "01" ou bolinha numerada.
+- **A logo da R12** (símbolo verde e "company") não gira, não deforma e não leva caixa nem faixa atrás. No escuro é a versão com "company" claro. `topo` já faz.
+- **Nada por cima de foto ou de print:** sem selo, etiqueta, bolinha, cartão ou seta em cima. Para explicar um print: rótulo do lado de fora e linha fina até o ponto (`linha_fina`).
 
-## 7. O fio: o rodapé do Convello
+## 7. O fio: o rodapé da R12
 
-No lugar do botão em aba das agências, o Convello tem o **fio**: uma linha fina que corre de ponta a
+No lugar do botão em aba das agências, a R12 tem o **fio**: uma linha fina que corre de ponta a
 ponta na mesma altura em todos os slides, como o fio de uma conversa.
 
 - A pergunta que puxa o próximo slide assenta no fio, à esquerda.
@@ -105,11 +105,11 @@ Uma peça começa na beirada direita de um slide e continua na esquerda do segui
 - A peça que atravessa fica POR CIMA do que está no slide (atrás, fica tapada) e não encosta em texto.
 - Confira no `planta/panorama.jpg`: os slides aparecem emendados.
 
-Uma ou duas emendas por carrossel. O exemplo tem duas: o ícone da capa para o slide 2 e o print do slide 7 para o 8.
+Uma ou duas emendas por carrossel. Ex.: a lupa 3D da capa continuando no slide 2.
 
 ## 9. O que é fixo e o que muda
 
-A identidade (logo, fontes, cores, margens, o fio) é o que faz o carrossel ser reconhecido como do Convello. A planta acima é o molde clássico, não o único: cada carrossel tem layout, ritmo de fundos e ordem de texto próprios (`moldes.md`). Dentro dela, cada carrossel é novo:
+A identidade (logo, fontes, cores, margens, o fio) é o que faz o carrossel ser reconhecido como da R12. A planta acima é o molde clássico, não o único: cada carrossel tem layout, ritmo de fundos e ordem de texto próprios (`moldes.md`). Dentro dela, cada carrossel é novo:
 personagem, pose, lado em que a pessoa fica, objetos 3D e o desenho das peças mudam sempre (`material.md`, "Inovar a cada carrossel").
 Inovar é mudar composição, ritmo e ordem mantendo a hierarquia: uma coisa só chama mais que as outras, texto legível, o fio no rodapé.
 
@@ -120,4 +120,4 @@ Inovar é mudar composição, ritmo e ordem mantendo a hierarquia: uma coisa só
 - [Ramotion: princípios de hierarquia visual](https://www.ramotion.com/blog/visual-hierarchy/)
 - [UX Collective: o diagrama de Gutenberg hoje](https://uxdesign.cc/gutenberg-modern-day-ux-14ac545e151c)
 - [Figma, Design Systems: espaço, grades e layouts](https://www.designsystems.com/space-grids-and-layouts/)
-- Referências de estilo: os carrosséis da V4 Company no Instagram (não vêm no pacote: são de terceiros). Inspiração, não cópia: o fio existe porque o botão em aba era cópia.
+- Referências de estilo: carrosséis de outras agências no Instagram (não vêm no pacote: são de terceiros). Inspiração, não cópia: o fio existe porque o botão em aba era cópia.

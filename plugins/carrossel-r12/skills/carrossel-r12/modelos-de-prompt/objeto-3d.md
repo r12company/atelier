@@ -29,10 +29,12 @@ Anexe o primeiro objeto aprovado:
 The same 3D object as in the attached reference image, with the same material, the same color and the same light, but seen from the other side: turned to the right, so the thickness shows on the RIGHT side and at the bottom, and slightly tilted back. The design stays correct and readable, not mirrored. Background: pure white (#FFFFFF), flat, no shadow. No text.
 ```
 
-## Exemplo do Convello (carrossel 02: o ícone do WhatsApp em azul; na R12, troque o azul pelo verde #95db30)
+## Exemplo da R12 (a lupa da proposta de SEO)
 
 ```text
-A single 3D object: the WhatsApp icon in BLUE, same design as the attached reference image. A glossy blue rounded square (blue #0A6BF0) with very rounded corners, thickness and volume, like a chubby plastic button, with the chat bubble and the phone in WHITE in the center, embossed. Seen from the front, slightly tilted and turned about 12 degrees, with soft studio reflection on top. The icon is blue, never green. The object is centered and fills about 70% of the image, whole, with no edge cut off. Background: pure white (#FFFFFF), flat, no gradient, no floor, no cast shadow and no reflection on the background. No text, no letters, no watermark.
+A single 3D object: a magnifying glass, made of glossy green plastic (green #95db30), rounded and chubby, with a thick ring, a short handle, thickness, volume, soft studio reflections and a small white highlight on the lens. Seen from the front, slightly tilted and turned about 12 degrees. The object is green, never blue. The object is centered and fills about 70% of the image, whole, with no edge cut off. Background: pure white (#FFFFFF), flat, no gradient, no floor, no cast shadow and no reflection on the background. No text, no letters, no watermark.
 ```
+
+Outros que combinam com os serviços da R12: pino de mapa (aparecer na cidade), alvo (anúncio certeiro), megafone (anúncio), gráfico de barras subindo (resultado).
 
 Refaça se tiver: placa ou quadrado atrás do objeto, cor errada, desenho da marca errado, texto.

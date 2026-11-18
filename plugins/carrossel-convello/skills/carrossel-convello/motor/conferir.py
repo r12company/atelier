@@ -66,8 +66,9 @@ elif FORMATO == 'carrossel' and nums and not 6 <= len(nums) <= 10:
 if CARD and '1080x1920' in tamanhos:
     erros.append('card é post de feed: 1080x1350 ou 1080x1440, não 1080x1920')
 # Régua de texto: carrossel 75 palavras e 14 blocos por slide; card e stories são lidos mais rápido
+MIRA = 60  # o alvo de palavras por slide (referencias/copy.md, seção 3); card e stories: 30 (referencias/formatos.md)
 if FORMATO != 'carrossel':
-    MAX_PALAVRAS, MAX_BLOCOS = 50, 10
+    MAX_PALAVRAS, MAX_BLOCOS, MIRA = 50, 10, 30
 if nums and not os.path.exists(os.path.join(PASTA, 'folha.jpg')):
     erros.append('sem folha.jpg: rode o montar.py sem número de slide')
 
@@ -112,7 +113,7 @@ if codigo:
         if palavras > MAX_PALAVRAS or len(blocos) > MAX_BLOCOS:
             cheios.append(f'{n:02d} ({palavras} palavras, {len(blocos)} blocos)')
     if cheios:
-        avisos.append(f'texto demais (régua: até {MAX_PALAVRAS} palavras e {MAX_BLOCOS} blocos por slide, mire em 60): '
+        avisos.append(f'texto demais (régua: até {MAX_PALAVRAS} palavras e {MAX_BLOCOS} blocos por slide no {FORMATO}, mire em {MIRA}): '
                       + ', '.join(cheios) + '. Corte notas, rótulos e cartões empilhados')
 for sobra in ('previa',):
     if os.path.isdir(os.path.join(PASTA, sobra)):

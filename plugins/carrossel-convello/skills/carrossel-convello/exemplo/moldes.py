@@ -1,5 +1,5 @@
-"""Exemplo das composições (exemplo/moldes.jpg). Atenção: a capa do slide 1 com a palavra em tarja foi REPROVADA depois;
-vale a capa limpa do 02, só mudando a posição (referencias/moldes.md).
+"""Exemplo das composições (exemplo/moldes.jpg). A capa (1) e o final (5) foram refeitos limpos, como a regra pede:
+sem palavra em tarja e sem escurecer a foto inteira (referencias/moldes.md e reprovado.md).
 Foto do slide 2: "Amazon Spheres 2018", de Andy Li, Wikimedia Commons, domínio público (CC0). As imagens não vêm no pacote:
 é código de consulta."""
 from comum import (ATE, AZUL, BRANCO, PECA_Y, VERMELHO, abrir, abrir_foto, chamada, corpo, credito, fechar, fio, foto_de_pessoa, manchete,
@@ -12,7 +12,8 @@ def s1():
     abrir_foto(1)
     foto_de_pessoa('homem-capa.png', cabelo=375, queixo=672, centro=430)
     topo('branco', arroba=False)
-    titulo_de_foto('O e-mail da Microsoft', 'CAIU', 230, fundo_da_palavra=AZUL)
+    titulo_de_foto('O e-mail da Microsoft', 'CAIU', 230)
+    tarja_da_capa('E agora, quem responde?')
     fechar(1)
 
 
@@ -45,9 +46,9 @@ def s4():  # recorte de notícia + palavra de impacto
 
 def s5():
     abrir_foto(5)
-    foto_de_pessoa('homem-final.png', cabelo=388, queixo=650, centro=443, escurecer='tudo')
-    topo('azul', arroba=False)
-    titulo_de_foto('O final pode ter', 'OUTRA CARA', 175, base=700)
+    foto_de_pessoa('homem-final.png', cabelo=388, queixo=650, centro=443)
+    topo('branco', arroba=False)
+    titulo_de_foto('O final pode ter', 'OUTRA CARA', 175)
     chamada('Comente', 'SIM')
     fechar(5)
 

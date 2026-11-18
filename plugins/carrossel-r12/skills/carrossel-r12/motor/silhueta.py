@@ -5,13 +5,27 @@ o recorte da pessoa por cima, no mesmo lugar. Onde não há objeto, nada muda na
 
 Como funciona: a parede é lisa, então dá para "adivinhar" a cor dela em cada ponto a partir das faixas
 onde só existe parede (as duas laterais e o topo). Tudo que foge dessa cor é a pessoa.
+Quando existe <foto>-mascara.png ao lado da foto (o alisar.py grava), o recorte vai pela máscara. Quando o cabelo
+entra na faixa de cima (o topo não é só parede), a máscara é feita na hora, pelo mesmo método do alisar.py.
 
 Uso: python3 photocraft/silhueta.py <foto> <saida.png> <x_do_rosto> <y_do_rosto>
 """
+import os
 import sys
 
 import numpy as np
 from PIL import Image, ImageDraw, ImageFilter
+
+from alisar import e_parede, mascara
+
+MAX_PESSOA = 0.70  # acima disso o recorte levou a parede junto
+
+
+def _conferir_tamanho(alfa):
+    cobre = float((alfa > 0.5).mean())
+    if cobre > MAX_PESSOA:
+        raise ValueError(f'o recorte da pessoa cobre {cobre:.0%} da foto (o limite é {MAX_PESSOA:.0%}): levou a parede junto. '
+                         'Rode python3 motor/alisar.py <foto> e use a foto -lisa.png; se continuar, gere a foto com mais parede em volta.')
 
 
 def recortar_pessoa(origem, destino, rosto, lado=0.10, topo=0.24, t0=14, t1=36):
@@ -19,6 +33,15 @@ def recortar_pessoa(origem, destino, rosto, lado=0.10, topo=0.24, t0=14, t1=36):
     é só parede. `t0` e `t1`: diferença de cor em que um ponto começa a ser pessoa e em que é pessoa por inteiro."""
     img = np.asarray(Image.open(origem).convert('RGB')).astype(np.float64)
     h, w, _ = img.shape
+    arq = os.path.splitext(origem)[0] + '-mascara.png'
+    if os.path.exists(arq) or e_parede(img)[:int(topo * h)].mean() < 0.97:  # máscara pronta, ou cabelo na faixa de cima
+        m = Image.open(arq).convert('L') if os.path.exists(arq) else mascara(img, rosto)
+        if m.size != (w, h):
+            raise ValueError(f'{os.path.basename(arq)} tem {m.size[0]}x{m.size[1]} e a foto {w}x{h}: rode o alisar.py de novo nesta foto.')
+        alfa = np.asarray(m) / 255
+        _conferir_tamanho(alfa)
+        Image.fromarray(np.dstack([img.round(), alfa * 255]).round().astype(np.uint8), 'RGBA').save(destino)
+        return None
     yy, xx = np.mgrid[0:h, 0:w]
     x, y = xx / w - 0.5, yy / h - 0.5
     parede = (xx < lado * w) | (xx >= (1 - lado) * w) | (yy < topo * h)
@@ -68,10 +91,15 @@ def recortar_pessoa(origem, destino, rosto, lado=0.10, topo=0.24, t0=14, t1=36):
     if sobra > 0.25:
         raise ValueError(f'o recorte da pessoa levou parede junto ({sobra:.0%} das laterais): gere a foto com parede cinza clara '
                          'e roupa que contraste, ou monte sem objeto atrás (sem atras=).')
+    _conferir_tamanho(alfa)
     Image.fromarray(rgba, 'RGBA').save(destino)
     return dif[parede].max(), np.percentile(dif[parede], 99.5)
 
 
 if __name__ == '__main__':
-    pior, quase = recortar_pessoa(sys.argv[1], sys.argv[2], (int(sys.argv[3]), int(sys.argv[4])))
-    print(f'erro da parede adivinhada: pior ponto {pior:.0f}, 99,5% abaixo de {quase:.0f} (o corte começa em 14)')
+    erro = recortar_pessoa(sys.argv[1], sys.argv[2], (int(sys.argv[3]), int(sys.argv[4])))
+    if erro is None:
+        print('recortado pela máscara (cabelo no topo ou -mascara.png ao lado da foto)')
+    else:
+        pior, quase = erro
+        print(f'erro da parede adivinhada: pior ponto {pior:.0f}, 99,5% abaixo de {quase:.0f} (o corte começa em 14)')
