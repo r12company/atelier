@@ -104,12 +104,11 @@ def grao(nome, quanto, preso=True):
 def abrir(n, qual=None, destaque=None, foto=None, foco_x=0.5, foco_y=0.4, zoom=1.0, escurecer='baixo', logo=None,
           foto_no_topo=None, foto_ate=620, card=False):
     """Abre um slide de conteúdo com o fundo, a logo e o arroba.
-    `qual`: 'branco', 'azul', 'escuro' (marinho) ou 'foto' (foto no slide todo, com `foto=arquivo`). Sem `qual`, o
-    padrão: par branco, ímpar azul. Cada carrossel escolhe o seu ritmo de fundos (ver referencias/moldes.md); o
-    contraste continua valendo: peça escura no claro, peça clara no azul e no escuro.
-    `escurecer` (só com foto): onde a foto escurece para o texto aparecer: 'baixo', 'cima', 'tudo' ou 'nenhum'.
-    `logo`: 'escura' ou 'branca' (padrão: escura no branco, branca nos outros).
-    `destaque=VERMELHO` troca o azul nos slides do problema (só faz efeito no branco).
+    `qual`: 'claro' (o mesmo que 'branco': quase branco) ou 'escuro' (o mesmo que 'azul': o #161616 com toque de verde;
+    o nome 'azul' ficou do motor do Convello). Sem `qual`, o padrão: par claro, ímpar escuro. O contraste continua
+    valendo: peça escura no claro, peça clara no escuro.
+    `logo`: 'escura' ou 'branca' (padrão: escura no claro, branca no escuro).
+    `destaque=VERMELHO` troca o verde de destaque nos slides do problema (só faz efeito no claro).
     `foto_no_topo=arquivo`: a foto ocupa a faixa de cima, de ponta a ponta, até `foto_ate`; a logo vai branca por cima
     dela e o texto começa embaixo (molde "metade foto"). `foco_x`, `foco_y` e `zoom` escolhem o pedaço da foto.
     `card=True`: post único (uma imagem só, SLIDES = {1: s1}). Sem fio; a peça pode descer até CARD_ATE."""
@@ -119,10 +118,11 @@ def abrir(n, qual=None, destaque=None, foto=None, foco_x=0.5, foco_y=0.4, zoom=1
     if n < 2 and not card:
         raise ValueError('o slide 1 é a capa: use abrir_foto (ou abrir(1, card=True) para um card).')
     qual = qual or ('branco' if card or n % 2 == 0 else 'azul')
-    if qual in ('escuro', 'foto'):
-        raise ValueError(f'fundo "{qual}" reprovado pelo dono da marca em 15/11 ("poluído, parece site"): slide de conteúdo é branco ou azul.')
+    qual = {'claro': 'branco', 'escuro': 'azul'}.get(qual, qual)
+    if qual == 'foto':
+        raise ValueError(f'fundo "{qual}" reprovado pelo dono da marca em 15/11 ("poluído, parece site"): slide de conteúdo é claro ou escuro.')
     if qual not in TEMAS:
-        raise ValueError(f'fundo "{qual}" não existe: use branco ou azul.')
+        raise ValueError(f'fundo "{qual}" não existe: use claro (ou branco) ou escuro (ou azul).')
     if qual == 'foto' and not foto:
         raise ValueError("abrir(n, 'foto') precisa de foto=arquivo.")
     T = dict(TEMAS[qual])
@@ -341,6 +341,16 @@ def escurecer_foto(onde='baixo'):
                  {'gradient': {'stops': [[0, '#0b120d'], [1, '#0b120d']], 'opacityStops': [[0, 0], [0.42, 0.82], [1, 0.97]], 'angle': -90}})
 
 
+def _logo_fora_do_cabelo(pessoa, arquivo):
+    """Logo em cima do cabelo é proibido (referencias/material.md): a caixa da logo não pode tocar a pessoa."""
+    x0, x1, y0, y1 = MARGEM, MARGEM + 335, LOGO_Y - 32, LOGO_Y + 32  # a logo da R12 tem 335 de largura
+    alfa = subprocess.run(['magick', pessoa, '-alpha', 'extract', '-crop', f'{x1 - x0}x{y1 - y0}+{x0}+{y0}', '+repage', '-threshold', '50%',
+                           '-format', '%[fx:mean]', 'info:'], capture_output=True, text=True, check=True).stdout
+    if float(alfa) > 0.002:
+        raise ValueError(f'{os.path.basename(arquivo)}: a pessoa encosta na logo (caixa x {x0} a {x1}, y {y0} a {y1}) e a logo ficaria em cima '
+                         'do cabelo. Meça de novo o alto do cabelo com a régua de foto, diminua o rosto ou leve o rosto para a direita (rosto_x).')
+
+
 def foto_de_pessoa(arquivo, cabelo, queixo, centro, atras=None, rosto_x=540, rosto=ROSTO, escurecer='baixo'):
     """Foto de pessoa ocupando o slide todo: rosto com ROSTO de altura, cabelo começando em CABELO_Y e rosto
     no meio do slide. `cabelo`, `queixo` (alturas) e `centro` (posição do rosto na largura) são medidos na
@@ -367,11 +377,18 @@ def foto_de_pessoa(arquivo, cabelo, queixo, centro, atras=None, rosto_x=540, ros
     destino = os.path.join(CACHE, nome + '.png')
     subprocess.run(['magick', origem] + enquadrar + nitidez + [destino], check=True)
     pc.imagem('FOTO', destino, 540, ALTURA / 2)
-    if atras:
-        atras()
-        solta, pessoa = os.path.join(CACHE, nome + '-solta.png'), os.path.join(CACHE, nome + '-pessoa.png')
+    solta, pessoa = os.path.join(CACHE, nome + '-solta.png'), os.path.join(CACHE, nome + '-pessoa.png')
+    try:
         recortar_pessoa(origem, solta, (centro, (cabelo + queixo) // 2))
         subprocess.run(['magick', solta] + enquadrar + nitidez + [pessoa], check=True)
+    except ValueError:
+        if atras:
+            raise
+        AVISOS.append(f'{os.path.basename(arquivo)}: não deu para recortar a pessoa, então ninguém conferiu se a logo encosta no cabelo. Olhe o slide.')
+    else:
+        _logo_fora_do_cabelo(pessoa, arquivo)
+    if atras:
+        atras()
         pc.imagem('PESSOA', pessoa, 540, ALTURA / 2)
     escurecer_foto(escurecer)
     grao('GRAO', 9, preso=False)
@@ -564,7 +581,11 @@ def gravar_fichas():
 def rodar(slides, args):
     """Monta os slides pedidos na linha de comando (ou todos) e, no fim, a folha com todos eles."""
     pedidos = [int(a) for a in args] or sorted(slides)
+    nums = sorted(slides)
     try:
+        if not args and nums != [1] and nums != list(range(1, len(nums) + 1)):
+            raise SystemExit(f'Este slides.py tem só os slides {nums}, e a montagem completa precisa ir de 1 a {len(nums)} sem pular.\n'
+                             f'Para montar só esses: python3 motor/montar.py <pasta> {" ".join(map(str, nums))}')
         for n in pedidos:
             if n not in slides:
                 raise SystemExit(f'não existe o slide {n} em slides.py (existem: {sorted(slides)})')
@@ -575,14 +596,12 @@ def rodar(slides, args):
         if FEITOS:
             gravar_fichas()
     if not args and sorted(slides) != [1]:  # um slide só é card: não tem capa nem final
-        nums = sorted(slides)
-        assert nums == list(range(1, len(nums) + 1)), f'os slides têm de ir de 1 a {len(nums)} sem pular: {nums}'
         for n in nums:
             certo = 'foto' if n in (1, nums[-1]) else 'conteudo'
             assert FEITOS[n]['tipo'] == certo, f'slide {n}: a capa e o final são de foto e os do meio são de conteúdo'
     pngs = sorted(f for f in os.listdir(os.path.join(SAIDA, 'png')) if f.endswith('.png'))
     folha = os.path.join(SAIDA, 'folha.jpg')
-    subprocess.run(['montage'] + [os.path.join(SAIDA, 'png', f) for f in pngs] + ['-resize', '540x720', '-tile', '5x', '-geometry', '+10+10',
+    subprocess.run(['montage'] + [os.path.join(SAIDA, 'png', f) for f in pngs] + ['-resize', '540x720', '-tile', f'{min(len(pngs), 5)}x', '-geometry', '+10+10',
                    '-background', '#111', '-quality', '90', folha], check=True)
     seguidos = [n for n in sorted(FEITOS) if FEITOS[n].get('tema') and FEITOS.get(n + 1, {}).get('tema') == FEITOS[n]['tema']]
     for n in seguidos:

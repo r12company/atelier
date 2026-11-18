@@ -1,6 +1,6 @@
 # Caminho B: montar à mão no Photoshop ou no Figma
 
-Na R12 mudam só as cores (fundos claro e escuro, verde #95db30, ver `marca.md` e `motor/comum.py`), a logo (`marca/r12-logo-64.png` e `-branca-64.png`) e o título: **Oswald 82**, peso 600, linhas a 92 px uma da outra, sem espaço negativo entre letras. O resto da planta é igual.
+Cores: fundos claro e escuro, verde `#95db30` (ver `marca.md` e `DESIGN-SYSTEM.md`). Logo: `marca/r12-logo-64.png` e `-branca-64.png`. Título: **Oswald 82**, peso 600, linhas a 92 px uma da outra, sem espaço negativo entre letras.
 
 Use quando o Atelier não roda neste computador (o `checar.py` disse o que falta) ou no Claude.ai, onde o PhotoCraft não instala.
 O Claude continua fazendo roteiro, legenda, pedidos de imagem e o plano de cada slide; a produtora monta seguindo a planta abaixo.
@@ -11,13 +11,13 @@ Os números são os mesmos do `motor/planta.py`: um slide montado à mão tem de
 Para cada slide, uma ficha em `<carrossel>/plano.md`:
 
 ```markdown
-## Slide 3 (fundo azul, molde clássico)
-Título: Você viu. / [destaque] Mas esqueceu de responder.
-Texto: Não foi falta de interesse. A mensagem ficou / para depois. Quando você lembra,
-Tarja: o cliente pode já ter procurado outra empresa.
-Peça: conversa clara (bege #EBE4D8), de 80,592 a 1000,1264, com ...
-Fio: E se tiver uma equipe?
-Camadas: FUNDO, FUNDO-GRAO, LOGO, ARROBA, TITULO-1, TITULO-2, TEXTO-1, TEXTO-2, TEXTO-3-TARJA, PECA-..., FIO-...
+## Slide 3 (fundo escuro, molde clássico)
+Título: Caiu num perfil / [destaque] sem preço, sem endereço.
+Texto: (sem texto de apoio)
+Tarja: (sem tarja)
+Peça: cartão claro (#e7ffef) com um perfil vazio desenhado, de 80,560 a 1000,1264, com ...
+Fio: O que ela faz?
+Camadas: FUNDO, FUNDO-GRAO, LOGO, ARROBA, TITULO-1, TITULO-2, TITULO-2-TARJA, PECA-..., FIO-...
 ```
 
 ## Documento
@@ -31,10 +31,10 @@ Camadas: FUNDO, FUNDO-GRAO, LOGO, ARROBA, TITULO-1, TITULO-2, TEXTO-1, TEXTO-2, 
 | --- | --- | --- |
 | Margens laterais | x = 80 e x = 1000 | igual |
 | Logo | de y = 56 a 120 (meio em 88), em x = 80 | igual |
-| Título, linhas de base | 244 e 324 | igual |
-| Texto de apoio, linhas de base | 400 e 448 | igual |
-| Frase em tarja | 472 a 528 | igual |
-| Peça | 592 a 1264 | 592 a 1174 |
+| Título, linhas de base | 244 e 336 | igual |
+| Texto de apoio | logo abaixo do título (só quando indispensável) | igual |
+| Frase em tarja | logo abaixo do texto | igual |
+| Peça | 64 px abaixo do último texto até 1264 | até 1174 |
 | Fio | 1344 (faixa do rodapé de 1296 a 1392) | 1254 |
 | Foto: cabelo começa | 48 | 48 |
 | Foto: rosto (cabelo ao queixo) | 540 de altura | 500 |
@@ -48,7 +48,7 @@ Respiros sempre da régua de 8: 8, 16, 24, 40, 48, 64, 80 (`arquitetura-visual.m
 
 | Onde | Fonte | Tamanho | Peso | Espaço entre letras |
 | --- | --- | --- | --- | --- |
-| Título | IBM Plex Sans | 64 | 700 | -15 |
+| Título | Oswald | 82 (até 92) | 600 | 0 |
 | Texto de apoio | IBM Plex Sans | 34 | 400 | 0 |
 | Frase em tarja | IBM Plex Sans | 34 | 700, dentro de uma tarja de 56 de altura, cantos de 8 | 0 |
 | Pergunta do fio | IBM Plex Sans | 34 | 600 | 0 |
@@ -58,7 +58,7 @@ Respiros sempre da régua de 8: 8, 16, 24, 40, 48, 64, 80 (`arquitetura-visual.m
 | Tarja da capa | IBM Plex Sans | 64 | 700, tarja de 96 de altura, cantos de 16 | -5 |
 
 Nada abaixo de 24 px. As fontes estão em `fontes/` da skill (instale antes de abrir o Photoshop ou o Figma).
-No Figma, o espaço entre letras -15 do motor corresponde a -1,5%.
+No Figma, o espaço entre letras -10 do motor corresponde a -1%.
 
 ## Cores e fundos
 

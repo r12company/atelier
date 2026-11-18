@@ -12,7 +12,9 @@ O padrão que o dono da marca aprovou em 15/11/2026 está guardado em código: o
 
 Pasta desta skill: `${CLAUDE_SKILL_DIR}` (a pasta onde está este SKILL.md). Pasta de trabalho: `$CARROSSEIS` (padrão `~/carrosseis`), um carrossel por pasta: `$CARROSSEIS/NN-tema/`.
 
-Antes de tudo, veja o resultado aprovado, `exemplo/folha.jpg` (Read), o melhor da campanha editorial, `exemplo/tiktok-folha.jpg` (por que funciona: `referencias/moldes.md`), o exemplo de composições (`exemplo/moldes.jpg`) e as capas que vocês já fizeram, `$CARROSSEIS/*/png/01.png`: a identidade você repete; personagem, capa, layout e ordem do texto, não.
+Antes de tudo, veja o resultado aprovado, `exemplo/folha.jpg` (Read), o melhor da campanha editorial, `exemplo/tiktok-folha.jpg` (por que funciona: `referencias/moldes.md`), o exemplo de composições (`exemplo/moldes.jpg`, com capa e final limpos) e as capas que vocês já fizeram, `$CARROSSEIS/*/png/01.png`: a identidade você repete; personagem, capa, layout e ordem do texto, não.
+
+**O que o Convello é e faz, a demonstração, o tom de voz e o que não prometer:** `referencias/marca.md`. Leia antes do roteiro.
 
 Esta skill vence `ig-carousel` e `ig-caption` em tudo que divergir (elas pedem HTML e contador de slide: os dois foram reprovados).
 
@@ -83,11 +85,28 @@ A resposta para a pressa é mostrar a capa cedo, não pular etapa.
 | "Escrevo o prompt do zero" | Junte os blocos aprovados dos `modelos-de-prompt/` |
 | "É gosto: pergunto em texto" | 3 ou 4 opções numa imagem só, quem pediu escolhe riscando |
 
+
+## Prints do CRM
+
+Os prints vêm da API Atelier Telas da Convello (`https://atelier.convello.com.br`): telas reais do CRM em modo demonstração, com dados inventados, por ramo (genérico, imobiliária, advocacia, assinaturas), tema claro ou escuro, computador ou celular, e peças soltas com fundo transparente (cartão da ligação, coluna do funil, lista de conversas).
+
+- **A produtora tem a chave** (a Convello fornece): adicione o MCP uma vez, com a chave no lugar de SUA_CHAVE, e peça os prints pela ferramenta `print_tela` (a lista sai de `listar_telas`). Salve o PNG em `NN-tema/telas/`.
+  ```bash
+  claude mcp add --transport http atelier-telas https://atelier.convello.com.br/mcp --header "Authorization: Bearer SUA_CHAVE"
+  ```
+- **Sem chave:** peça os prints à Convello, dizendo a tela, o ramo e o tema.
+- A chave nunca vai para arquivo da pasta do carrossel, commit, print ou resposta. Guia completo (opções, telas, erros): `docs/atelier-telas.md` no repositório do Atelier.
+
+## Foto de pessoa com cabelo perto do topo
+
+O recorte automático da pessoa (para pôr objeto atrás dela e para conferir a logo) supõe que o alto da foto é só parede. Foto do Gemini costuma ter vinheta e o cabelo perto da borda de cima. Nesses casos, alise a parede antes: `python3 $M/alisar.py NN-tema/geradas/<foto>.png` grava `<foto>-lisa.png` e `<foto>-lisa-mascara.png`; use a `-lisa.png` no `slides.py` e o motor recorta pela máscara ao lado. Se o cabelo entra no alto e não há máscara, o motor faz a máscara na hora. Se o recorte cobrir mais de 70% da foto, ou se a pessoa encostar na caixa da logo, o motor para com erro e diz o que fazer.
+
 ## Comandos
 
 ```bash
 M="${CLAUDE_SKILL_DIR}/motor"
 python3 $M/checar.py
+python3 $M/alisar.py NN-tema/geradas/<foto>.png   # parede lisa e máscara da pessoa (foto do Gemini, cabelo no topo)
 PREVIA=1 python3 $M/montar.py NN-tema 1     # só a capa, em previa/
 python3 $M/montar.py NN-tema                # todos, mais a folha.jpg
 python3 $M/regua.py NN-tema                 # planta/: régua, rotas do olho e panorama

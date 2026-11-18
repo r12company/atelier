@@ -1,7 +1,7 @@
 # Design system do Convello (posts de Instagram)
 
 A identidade que se repete em todo post: carrossel, card e stories. Dá para montar no Figma só com esta página; o motor (`motor/comum.py`, `motor/planta.py`) usa exatamente estes números.
-Prancha visual: `docs/img/design-system-convello.jpg` no repositório. Os recortes de exemplo estão em `design-system/` (tirados dos slides aprovados).
+Prancha visual: `design-system/prancha.jpg`. Os recortes de exemplo estão em `design-system/` (tirados dos slides aprovados).
 
 ## 1. Cores
 

@@ -1,7 +1,7 @@
 # Design system da R12 Company (posts de Instagram)
 
 A identidade que se repete em todo post: carrossel, card e stories. Dá para montar no Figma só com esta página; o motor (`motor/comum.py`, `motor/planta.py`) usa exatamente estes números. Quem é a marca e o tom: `referencias/marca.md`.
-Prancha visual: `docs/img/design-system-r12.jpg` no repositório. Os recortes de exemplo estão em `design-system/` (tirados dos slides aprovados da proposta de SEO).
+Prancha visual: `design-system/prancha.jpg`. Os recortes de exemplo estão em `design-system/` (tirados dos slides aprovados da proposta de SEO).
 
 ## 1. Cores
 

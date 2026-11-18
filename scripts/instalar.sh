@@ -14,6 +14,7 @@ REPO=r12company/atelier
 SKILLS=(carrossel-convello carrossel-r12)
 [ $# -gt 0 ] && SKILLS=("$@")
 DESTINO="$HOME/.claude/skills"
+PATH_ORIGINAL="$PATH"
 diga() { printf '%s\n' "$*"; }
 
 tmp=$(mktemp -d)
@@ -80,7 +81,6 @@ if ! command -v photocraft-cli >/dev/null 2>&1 && [ ! -x "$HOME/.local/bin/photo
     bin=$(find "$HOME/.local/opt/photocraft" -path '*/bin/photocraft-cli' -type f | sort | tail -1)
     ln -sf "$bin" "$HOME/.local/bin/photocraft-cli"
     diga "PhotoCraft instalado: $HOME/.local/bin/photocraft-cli"
-    case ":$PATH:" in *":$HOME/.local/bin:"*) ;; *) diga "Atenção: $HOME/.local/bin não está no PATH. Abra um terminal novo ou acrescente essa pasta ao PATH." ;; esac
   else
     diga "PhotoCraft: baixe em https://github.com/storytold/photocraft/releases"
     diga "  Mac: o arquivo photocraft-cli-...-macos-universal.zip; descompacte e ponha o photocraft-cli numa pasta do PATH (por exemplo ~/.local/bin)."
@@ -88,6 +88,11 @@ if ! command -v photocraft-cli >/dev/null 2>&1 && [ ! -x "$HOME/.local/bin/photo
   fi
 fi
 export PATH="$HOME/.local/bin:$PATH"
+# Outro photocraft-cli (instalado à parte) também serve: só avisa qual vai ser usado.
+usado=$(command -v photocraft-cli 2>/dev/null || true)
+if [ -n "$usado" ] && [ "$usado" != "$HOME/.local/bin/photocraft-cli" ]; then
+  diga "PhotoCraft: usando o que já estava instalado, $usado (não é o que o Atelier instala; tudo bem)."
+fi
 
 # 5. Conferir o que falta
 diga ""
@@ -96,5 +101,16 @@ if command -v python3 >/dev/null 2>&1; then
 else
   diga "Falta o Python 3 (python.org, ou no Mac: brew install python). Sem ele o Atelier não monta."
 fi
+case ":$PATH_ORIGINAL:" in
+  *":$HOME/.local/bin:"*) ;;
+  *)
+    diga ""
+    diga "Atenção: a pasta $HOME/.local/bin (onde fica o photocraft-cli) não está no PATH deste terminal. Rode:"
+    diga ""
+    diga '  export PATH="$HOME/.local/bin:$PATH"'
+    diga ""
+    diga "e cole essa mesma linha no fim do ~/.bashrc (ou do ~/.zshrc, no Mac e em quem usa zsh) para valer nos próximos terminais."
+    ;;
+esac
 diga ""
 diga "Pronto. Abra o Claude Code e peça, por exemplo: faz um carrossel do Convello sobre <o tema>."

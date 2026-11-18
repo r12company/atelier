@@ -4,7 +4,8 @@ Personagem NOVO a cada carrossel: outra pessoa (varie homem e mulher, idade, cab
 Dentro do mesmo carrossel a capa e o final são a mesma pessoa: gere a capa primeiro e anexe ela no pedido do final.
 
 R12: gente de verdade, dono de pequeno negócio, com roupa verde quando fizer sentido (a capa da proposta de SEO usou camisa verde, aprovada).
-Foto do Gemini: antes de montar, alise a parede (`python3 $M/alisar.py <carrossel>/geradas/<foto>.png`) e use o recorte pela máscara (`_recorte_pela_mascara` em `exemplo/slides-pdf-seo.py`). O recorte automático leva a parede junto.
+Foto do Gemini: antes de montar, alise a parede (`python3 $M/alisar.py <carrossel>/geradas/<foto>.png`). Ele grava `<foto>-lisa.png` e `<foto>-lisa-mascara.png`; use a `<foto>-lisa.png` no `slides.py` e o motor acha a máscara ao lado e recorta a pessoa por ela. Se o cabelo chega perto do topo, o motor faz a máscara na hora. Se a máscara cobre mais de 70% da foto (levou a parede junto), dá erro: gere outra com mais parede em volta.
+O motor também dá erro se a pessoa encosta na caixa da logo (logo em cima do cabelo é proibido): por isso o bloco 4 pede parede sobrando dos lados.
 
 Formato: 3:4 no Gemini (AI Studio) ou retrato 2:3 no ChatGPT; para stories, 9:16 (troque "Vertical 3:4 image" por "Vertical 9:16 image, with more plain wall above the head and below the waist"). Salvar em `geradas/` como PNG.
 
@@ -15,10 +16,10 @@ Formato: 3:4 no Gemini (AI Studio) ou retrato 2:3 no ChatGPT; para stories, 9:16
 
 **2. Gente de verdade** (copie):
 ```text
-A Brazilian person with an ordinary, real look, like a small business owner or someone from a sales team, not a catalog model. Natural expression, no forced smile.
+A Brazilian person with an ordinary, real look, like the owner of a small local business (a clinic, a shop, a restaurant), not a catalog model. Natural expression, no forced smile.
 ```
 
-**3. Pose e olhar** (escreva). Na capa a pessoa olha para o que importa (o celular, o objeto), que fica logo acima do título. No final ela olha para a câmera, tranquila. O gesto conta o assunto: notebook, café, abrindo uma caixa, sacolas de compras, sofá com controle remoto, braços cruzados, mala de viagem. Nem todo mundo segurando celular.
+**3. Pose e olhar** (escreva). Na capa a pessoa olha para o que importa (o celular, o objeto 3D), que fica logo acima do título. No final ela olha para a câmera, tranquila. O gesto conta o assunto: notebook, atrás do balcão da loja, apontando para cima, abrindo a porta do negócio, braços cruzados. Nem todo mundo segurando celular.
 
 **4. Foto para recorte** (copie; é o que deixa o motor pôr objetos atrás da pessoa):
 ```text
@@ -33,10 +34,10 @@ Studio photograph of the SAME person as in the attached reference image: the sam
 ```
 Depois o bloco 3 (pose do final, olhando para a câmera) e o bloco 4.
 
-## Exemplo (no estilo da capa do carrossel 02, em `exemplo/folha.jpg`)
+## Exemplo (no estilo da capa da proposta de SEO, em `exemplo/folha-pdf-seo.jpg`)
 
 ```text
-Studio photograph of a Brazilian man in his early 30s, short dark hair, trimmed beard, navy blue button-up shirt. A Brazilian person with an ordinary, real look, like a small business owner or someone from a sales team, not a catalog model. Natural expression, no forced smile. He holds the phone with both hands at chest height and looks at the screen, worried, eyebrows raised and mouth slightly open. The phone is fully visible. Framing from the waist up: ... (bloco 4 inteiro)
+Studio photograph of a Brazilian woman in her late 30s, shoulder-length dark hair, green button-up shirt, owner of a small dental clinic. A Brazilian person with an ordinary, real look, like the owner of a small local business (a clinic, a shop, a restaurant), not a catalog model. Natural expression, no forced smile. She holds the phone at chest height and looks at the screen, curious, as if searching for something. The phone is fully visible. Framing from the waist up: ... (bloco 4 inteiro)
 ```
 
 ## Refaça se tiver
