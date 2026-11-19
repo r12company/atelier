@@ -29,6 +29,20 @@ Esta skill vence `ig-carousel` e `ig-caption` em tudo que divergir (elas pedem H
 
 Você não gera imagem nem tira print sozinho. Peça, com o pedido pronto, e espere o arquivo chegar na pasta.
 
+## Antes do primeiro uso: preparar o computador
+
+Se `photocraft-cli` ou as fontes faltarem, rode o instalador. Ele descobre o sistema e baixa a versão certa do PhotoCraft sozinho:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/r12company/atelier/main/scripts/instalar.sh | bash
+export PATH="$HOME/.local/bin:$PATH"
+```
+
+- **Linux e Mac:** roda direto no terminal.
+- **Windows:** o Claude Code no Windows já usa o Git Bash, então o mesmo comando funciona; ele baixa o `photocraft-cli.exe`. Se faltar `python3`, instale com `winget install Python.Python.3.12` e abra o terminal de novo.
+- Se as fontes não aparecerem na peça, instale os arquivos de `fontes/` da skill com dois cliques (Windows e Mac) e rode de novo.
+- Depois, `python3 motor/checar.py` diz o que ainda falta.
+
 ## Passo a passo
 
 Faça na ordem. Ao chegar em cada passo, leia o arquivo indicado: é lá que está o detalhe.

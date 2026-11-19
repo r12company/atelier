@@ -24,6 +24,20 @@ Os exemplos daqui são `exemplo/folha-pdf-seo.jpg` (a folha aprovada), `exemplo/
 | Você (Claude) | Roteiro encaixado, pedidos de imagem (prompts prontos), slides no motor, conferência, legenda |
 | A produtora | Gera as imagens no Gemini ou no ChatGPT com os seus prompts, traz os prints do trabalho real da R12, aprova e posta |
 
+## Antes do primeiro uso: preparar o computador
+
+Se `photocraft-cli` ou as fontes faltarem, rode o instalador. Ele descobre o sistema e baixa a versão certa do PhotoCraft sozinho:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/r12company/atelier/main/scripts/instalar.sh | bash
+export PATH="$HOME/.local/bin:$PATH"
+```
+
+- **Linux e Mac:** roda direto no terminal.
+- **Windows:** o Claude Code no Windows já usa o Git Bash, então o mesmo comando funciona; ele baixa o `photocraft-cli.exe`. Se faltar `python3`, instale com `winget install Python.Python.3.12` e abra o terminal de novo.
+- Se as fontes não aparecerem na peça, instale os arquivos de `fontes/` da skill com dois cliques (Windows e Mac) e rode de novo.
+- Depois, `python3 motor/checar.py` diz o que ainda falta.
+
 ## Passo a passo
 
 | # | Passo | Pronto quando |

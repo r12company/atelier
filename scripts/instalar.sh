@@ -65,27 +65,40 @@ if ! (command -v fc-list >/dev/null 2>&1 && fc-list : family | grep -q "IBM Plex
   diga "Fontes IBM Plex Sans e Oswald instaladas em $pasta_fontes"
 fi
 
-# 4. PhotoCraft (o programa que o Atelier usa para montar), só no Linux de 64 bits e só se faltar
-if ! command -v photocraft-cli >/dev/null 2>&1 && [ ! -x "$HOME/.local/bin/photocraft-cli" ]; then
-  if [ "$(uname -s)" = "Linux" ] && [ "$(uname -m)" = "x86_64" ]; then
-    diga "Instalando o PhotoCraft (uns 140 MB)..."
-    pacote="$tmp/photocraft.tar.gz"
-    if [ -n "${PHOTOCRAFT_TAR:-}" ]; then
-      cp "$PHOTOCRAFT_TAR" "$pacote"
-    elif ! curl -fsSL -o "$pacote" "https://github.com/$REPO/releases/latest/download/photocraft-linux-x86_64.tar.gz"; then
-      versao=$(curl -fsSL https://api.github.com/repos/storytold/photocraft/releases/latest | sed -n 's/.*"tag_name": *"v\{0,1\}\([^"]*\)".*/\1/p' | head -1)
-      curl -fsSL -o "$pacote" "https://github.com/storytold/photocraft/releases/download/v$versao/photocraft-$versao-linux-x86_64.tar.gz"
-    fi
-    mkdir -p "$HOME/.local/opt/photocraft" "$HOME/.local/bin"
-    tar -xzf "$pacote" -C "$HOME/.local/opt/photocraft"
-    bin=$(find "$HOME/.local/opt/photocraft" -path '*/bin/photocraft-cli' -type f | sort | tail -1)
-    ln -sf "$bin" "$HOME/.local/bin/photocraft-cli"
-    diga "PhotoCraft instalado: $HOME/.local/bin/photocraft-cli"
-  else
-    diga "PhotoCraft: baixe em https://github.com/storytold/photocraft/releases"
-    diga "  Mac: o arquivo photocraft-cli-...-macos-universal.zip; descompacte e ponha o photocraft-cli numa pasta do PATH (por exemplo ~/.local/bin)."
-    diga "  Sem ele, as skills fazem roteiro, legenda e pedidos de imagem, e a montagem vai pelo caminho B (Photoshop ou Figma)."
-  fi
+# 4. PhotoCraft (o programa que o Atelier usa para montar): baixa a versão certa para cada computador, só se faltar
+pc_baixar() { # $1 = nome do arquivo na versão oficial do PhotoCraft
+  versao=$(curl -fsSL https://api.github.com/repos/storytold/photocraft/releases/latest | sed -n 's/.*"tag_name": *"v\{0,1\}\([^"]*\)".*/\1/p' | head -1)
+  [ -n "$versao" ] || versao=0.23.1
+  curl -fsSL -o "$tmp/pc" "https://github.com/storytold/photocraft/releases/download/v$versao/$(printf "$1" "$versao")"
+}
+if ! command -v photocraft-cli >/dev/null 2>&1 && [ ! -x "$HOME/.local/bin/photocraft-cli" ] && [ ! -x "$HOME/.local/bin/photocraft-cli.exe" ]; then
+  so="$(uname -s)"; cpu="$(uname -m)"
+  case "$cpu" in aarch64|arm64) cpu_l=aarch64; cpu_w=arm64 ;; *) cpu_l=x86_64; cpu_w=x64 ;; esac
+  destino="$HOME/.local/opt/photocraft"; mkdir -p "$destino" "$HOME/.local/bin"
+  diga "Instalando o PhotoCraft para $so ($cpu), uns 140 MB..."
+  case "$so" in
+    Linux)
+      if [ -n "${PHOTOCRAFT_TAR:-}" ]; then cp "$PHOTOCRAFT_TAR" "$tmp/pc"
+      elif [ "$cpu_l" = x86_64 ] && curl -fsSL -o "$tmp/pc" "https://github.com/$REPO/releases/latest/download/photocraft-linux-x86_64.tar.gz"; then :
+      else pc_baixar "photocraft-%s-linux-$cpu_l.tar.gz"; fi
+      tar -xzf "$tmp/pc" -C "$destino"
+      bin=$(find "$destino" -path '*/bin/photocraft-cli' -type f | sort | tail -1)
+      ln -sf "$bin" "$HOME/.local/bin/photocraft-cli" ;;
+    Darwin)
+      pc_baixar "photocraft-cli-%s-macos-universal.zip"
+      unzip -qo "$tmp/pc" -d "$destino"
+      bin=$(find "$destino" -name photocraft-cli -type f | sort | tail -1)
+      chmod +x "$bin"; xattr -dr com.apple.quarantine "$destino" 2>/dev/null || true
+      ln -sf "$bin" "$HOME/.local/bin/photocraft-cli" ;;
+    MINGW*|MSYS*|CYGWIN*)
+      pc_baixar "photocraft-%s-windows-$cpu_w-portable.zip"
+      if command -v unzip >/dev/null 2>&1; then unzip -qo "$tmp/pc" -d "$destino"
+      else powershell.exe -NoProfile -Command "Expand-Archive -Force '$(cygpath -w "$tmp/pc")' '$(cygpath -w "$destino")'"; fi
+      bin=$(find "$destino" -name photocraft-cli.exe -type f | sort | tail -1)
+      printf '#!/usr/bin/env bash\nexec "%s" "$@"\n' "$bin" > "$HOME/.local/bin/photocraft-cli"; chmod +x "$HOME/.local/bin/photocraft-cli" ;;
+    *) diga "PhotoCraft: sistema não reconhecido. Baixe a versão do seu computador em https://github.com/storytold/photocraft/releases e ponha o photocraft-cli em ~/.local/bin." ;;
+  esac
+  [ -n "${bin:-}" ] && diga "PhotoCraft instalado: $bin"
 fi
 export PATH="$HOME/.local/bin:$PATH"
 # Outro photocraft-cli (instalado à parte) também serve: só avisa qual vai ser usado.
